@@ -28,10 +28,10 @@ func VisionOpenIA(ctx context.Context, llm, imageInput, apiKey, prompt, modelo, 
 		prompt = "Analise a Imagem"
 	}
 	if modelo == "" {
-		modelo = "GPT-4o-mini"
+		modelo = "gpt-4o-mini"
 	}
 	if qualidadeImagem == "" {
-		qualidadeImagem = "Low"
+		qualidadeImagem = "low"
 	}
 	// Verifica se entrada da Functio Está Ok
 

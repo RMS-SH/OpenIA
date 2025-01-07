@@ -1,4 +1,4 @@
-package openia
+package RMSLLMs
 
 import (
 	"context"
