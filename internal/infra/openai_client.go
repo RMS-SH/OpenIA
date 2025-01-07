@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -21,6 +20,7 @@ type OpenAIClient struct {
 
 // NewOpenAIClient cria e retorna uma instância de OpenAIClient.
 func NewOpenAIClient(apiKeyOpenIA string) *OpenAIClient {
+
 	return &OpenAIClient{
 		apiKey: apiKeyOpenIA,
 	}
@@ -29,9 +29,6 @@ func NewOpenAIClient(apiKeyOpenIA string) *OpenAIClient {
 // AnalyzeImage atende ao contrato da VisionService.
 // Ele chama o método "AnalyzeImageInternal" que monta a requisição JSON para imagens.
 func (c *OpenAIClient) AnalyzeImage(ctx context.Context, imageInput string, prompt, modelo, qualidadeImagem string) (string, error) {
-	if c.apiKey == "" {
-		return "", errors.New("API key não foi definida")
-	}
 
 	// Exemplo: vamos usar "gpt-4o-mini" ou outro modelo que a OpenAI disponibilize para você.
 	modelName := modelo
@@ -76,9 +73,6 @@ func (c *OpenAIClient) AnalyzeImage(ctx context.Context, imageInput string, prom
 // AskTextPrompt é um exemplo de outro método para o mesmo endpoint /v1/chat/completions,
 // mas com mensagens de texto simples (sem "content" em array).
 func (c *OpenAIClient) AskTextPrompt(ctx context.Context, prompt string, maxTokens int) (string, error) {
-	if c.apiKey == "" {
-		return "", errors.New("API key não foi definida")
-	}
 
 	// Exemplo de modelo. Ajuste conforme disponibilidade.
 	const modelName = "gpt-4o"
