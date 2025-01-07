@@ -26,20 +26,15 @@ func NewOpenAIClient(apiKeyOpenIA string) *OpenAIClient {
 	}
 }
 
-// SetAPIKey permite mudar a API Key em tempo de execução (caso seja necessário).
-func (c *OpenAIClient) SetAPIKey(key string) {
-	c.apiKey = key
-}
-
 // AnalyzeImage atende ao contrato da VisionService.
 // Ele chama o método "AnalyzeImageInternal" que monta a requisição JSON para imagens.
-func (c *OpenAIClient) AnalyzeImage(ctx context.Context, imageInput string) (string, error) {
+func (c *OpenAIClient) AnalyzeImage(ctx context.Context, imageInput string, prompt, modelo, qualidadeImagem string) (string, error) {
 	if c.apiKey == "" {
 		return "", errors.New("API key não foi definida")
 	}
 
 	// Exemplo: vamos usar "gpt-4o-mini" ou outro modelo que a OpenAI disponibilize para você.
-	const modelName = "gpt-4o-mini"
+	modelName := modelo
 
 	// Monta a estrutura base da requisição
 	reqBody := dto.ChatCompletionsRequest{
@@ -51,7 +46,7 @@ func (c *OpenAIClient) AnalyzeImage(ctx context.Context, imageInput string) (str
 				Content: []dto.MessageContent{
 					{
 						Type: "text",
-						Text: "What is in this image?",
+						Text: prompt,
 					},
 				},
 			},
@@ -64,7 +59,7 @@ func (c *OpenAIClient) AnalyzeImage(ctx context.Context, imageInput string) (str
 			Type: "image_url",
 			ImageURL: &dto.ImageURL{
 				URL:    imageInput,
-				Detail: "high",
+				Detail: qualidadeImagem,
 			},
 		})
 	} else {
@@ -80,7 +75,7 @@ func (c *OpenAIClient) AnalyzeImage(ctx context.Context, imageInput string) (str
 
 // AskTextPrompt é um exemplo de outro método para o mesmo endpoint /v1/chat/completions,
 // mas com mensagens de texto simples (sem "content" em array).
-func (c *OpenAIClient) AskTextPrompt(ctx context.Context, prompt string) (string, error) {
+func (c *OpenAIClient) AskTextPrompt(ctx context.Context, prompt string, maxTokens int) (string, error) {
 	if c.apiKey == "" {
 		return "", errors.New("API key não foi definida")
 	}
@@ -97,7 +92,7 @@ func (c *OpenAIClient) AskTextPrompt(ctx context.Context, prompt string) (string
 			},
 		},
 		// max_tokens pode ser omitido ou configurado conforme necessidade
-		MaxTokens: 200,
+		MaxTokens: maxTokens,
 	}
 
 	return c.executeChatCompletion(ctx, reqBody)
@@ -122,7 +117,7 @@ func (c *OpenAIClient) executeChatCompletion(ctx context.Context, request dto.Ch
 	req.Header.Set("Authorization", "Bearer "+c.apiKey)
 
 	// Cria um HTTP Client com timeout
-	client := &http.Client{Timeout: 15 * time.Second}
+	client := &http.Client{Timeout: 360 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("erro na chamada à OpenAI: %w", err)
