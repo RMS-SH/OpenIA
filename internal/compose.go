@@ -20,3 +20,17 @@ func AnalisaImagem(ctx context.Context, llm, imageInput, apiKey, prompt, modelo,
 	return "", errors.New("LLM Não informada correta!")
 
 }
+
+func AnalisaImagemRetornoCompleto(ctx context.Context, llm, imageInput, apiKey, prompt, modelo, qualidadeImagem string) (interface{}, error) {
+
+	if llm == "OpenIA" {
+		return repositories.VisionOpenIAFullRetorno(ctx, llm, imageInput, apiKey, prompt, modelo, qualidadeImagem)
+	}
+
+	if llm == "Gemini" {
+		return repositories.VisionGeminiFullReturn(ctx, llm, imageInput, apiKey, prompt, modelo, qualidadeImagem)
+	}
+
+	return "", errors.New("LLM Não informada correta!")
+
+}

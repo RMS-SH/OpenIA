@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 
+	"github.com/RMS-SH/OpenIA/internal/dto"
 	"github.com/RMS-SH/OpenIA/internal/interfaces"
 )
 
@@ -24,4 +25,14 @@ func (uc *VisionUseCase) AnalyzeImageFromURL(ctx context.Context, url, prompt, m
 // AnalyzeImageFromBase64 encapsula a chamada de análise de imagem (Base64).
 func (uc *VisionUseCase) AnalyzeImageFromBase64(ctx context.Context, base64, prompt, modelo, qualidadeImagem string) (string, error) {
 	return uc.visionClient.AnalyzeImage(ctx, base64, prompt, modelo, qualidadeImagem)
+}
+
+// AnalyzeImageFromURL encapsula a chamada de análise de imagem (URL).
+func (uc *VisionUseCase) AnalyzeImageFromURLReturnComplete(ctx context.Context, url, prompt, modelo, qualidadeImagem string) (*dto.ChatCompletionsResponse, error) {
+	return uc.visionClient.AnalyzeImageFullReturn(ctx, url, prompt, modelo, qualidadeImagem)
+}
+
+// AnalyzeImageFromBase64 encapsula a chamada de análise de imagem (Base64).
+func (uc *VisionUseCase) AnalyzeImageFromBase64ReturnComplete(ctx context.Context, base64, prompt, modelo, qualidadeImagem string) (*dto.ChatCompletionsResponse, error) {
+	return uc.visionClient.AnalyzeImageFullReturn(ctx, base64, prompt, modelo, qualidadeImagem)
 }
