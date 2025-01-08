@@ -27,7 +27,14 @@ type chatCompletionsMsg struct {
 
 ///////////////////////////////////////////////////
 
-type TranscriptionResponse struct {
+type TranscriptionResponseWithDownloadInfo struct {
+	TranscriptionResponse TranscriptionResponse
+	DownloadIP            string
+	DownloadSizeMB        int64
+	StatusCode            int
+}
+
+type segments struct {
 	ID               int     `json:"id"`
 	Seek             int     `json:"seek"`
 	Start            float64 `json:"start"`
@@ -40,10 +47,10 @@ type TranscriptionResponse struct {
 	NoSpeechProb     float64 `json:"no_speech_prob"`
 }
 
-type transcription struct {
-	Task     string                  `json:"task"`
-	Language string                  `json:"language"`
-	Duration float64                 `json:"duration"`
-	Text     string                  `json:"text"`
-	Segments []TranscriptionResponse `json:"segments"`
+type TranscriptionResponse struct {
+	Task     string     `json:"task"`
+	Language string     `json:"language"`
+	Duration float64    `json:"duration"`
+	Text     string     `json:"text"`
+	Segments []segments `json:"segments"`
 }

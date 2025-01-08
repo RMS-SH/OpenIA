@@ -5,5 +5,14 @@ package adapters
 // converter a resposta recebida do LLM (interface{}) em uma string
 // que o caso de uso entende.
 type AnalyzeTextResponseAdapter interface {
-	AdaptResponse(response interface{}) (string, error)
+	AdaptResponse(response interface{}) (interface{}, error)
+	AdaptResponseSupervisor(response interface{}) (string, error)
+}
+
+type AudioToTextResponseAdapter interface {
+	AdaptResponse(response interface{}) (interface{}, error)
+}
+
+type AnalyzeImageAdapter interface {
+	AdaptResponse(response interface{}) (interface{}, error)
 }

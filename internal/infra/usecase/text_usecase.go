@@ -23,7 +23,18 @@ func NewTextUseCase(textClient interfaces.TextInterface, responseAdapter adapter
 
 // AnalyzeImageFromURL encapsula a chamada de análise de imagem (URL).
 func (tuc *TextUseCase) UseCasAnalyzeText(ctx context.Context, question, prompt, modelo string) (interface{}, error) {
-	return tuc.textClient.AnalyzeText(ctx, question, prompt, modelo)
+	response, err := tuc.textClient.AnalyzeText(ctx, question, prompt, modelo)
+	if err != nil {
+		return nil, err
+	}
+
+	Adapter, err := tuc.responseAdapter.AdaptResponse(response)
+	if err != nil {
+		return nil, err
+
+	}
+
+	return Adapter, nil
 }
 
 func (uc *TextUseCase) UseCasAnalyzeMultText(ctx context.Context, questions []string, prompt, modelo string) ([]interface{}, error) {
@@ -105,7 +116,7 @@ Por favor, responda apenas com:
 				return
 			}
 
-			supervisionResponse, err := uc.responseAdapter.AdaptResponse(rawResponse)
+			supervisionResponse, err := uc.responseAdapter.AdaptResponseSupervisor(rawResponse)
 			if err != nil {
 				log.Printf("Erro ao adaptar a resposta para '%s': %v", q, err)
 				mu.Lock()

@@ -39,7 +39,8 @@ func VisionOpenIA(ctx context.Context, imageInput, apiKey, prompt, modelo, quali
 
 	// Chama os Casos de USO
 	client := openia_client.NewOpenAIClientVision(apiKey, httpClient)
-	uc := usecase.NewVisionUseCase(client)
+	adapter := adapters.NewAdapterOpenIAResponseAdapterImagem()
+	uc := usecase.NewVisionUseCase(client, adapter)
 
 	// Verificação simples para distinguir URL vs. Base64
 	if strings.HasPrefix(imageInput, "http") {
@@ -87,7 +88,7 @@ func AudioOpenIATranscription(ctx context.Context, apiKey, url, modelo, language
 	}
 
 	if language == "" {
-		language = "Portuguese"
+		language = "pt"
 	}
 	if modelo == "" {
 		modelo = "whisper-1"
@@ -97,7 +98,35 @@ func AudioOpenIATranscription(ctx context.Context, apiKey, url, modelo, language
 
 	// Chama os Casos de USO
 	client := openia_client.NewOpenAIClientAudio(apiKey, httpClient)
-	uc := usecase.NewAudioUseCase(client)
+	adapter := adapters.NewAdapterOpenIAResponseAdapterAudio()
+	uc := usecase.NewAudioUseCase(client, adapter)
 
-	return uc.UseCaseAudioToText(ctx, url, "", "")
+	return uc.UseCaseAudioToText(ctx, url, modelo, language)
+}
+
+func SupervisorOpenIA(ctx context.Context, question map[string]string, apiKey, personificacaoDoModelo, modeloLLM string) (interface{}, error) {
+	// Verificação obrigatória dos parâmetros
+	if question == nil {
+		return "", errors.New("question não pode ser vazio")
+	}
+
+	if apiKey == "" {
+		return "", errors.New("API KEY não pode ser vazia")
+	}
+
+	if personificacaoDoModelo == "" {
+		personificacaoDoModelo = "Atue como supervisor"
+	}
+	if modeloLLM == "" {
+		modeloLLM = "gpt-4o-mini"
+	}
+
+	httpClient := clients.NewDefaultHTTPClient(360 * time.Second)
+
+	// Chama os Casos de USO
+	client := openia_client.NewOpenAIClientText(apiKey, httpClient)
+	adapter := adapters.NewAdapterOpenIAResponseAdapter()
+	uc := usecase.NewTextUseCase(client, adapter)
+
+	return uc.UseCaseSupervisor(ctx, question, personificacaoDoModelo, modeloLLM)
 }

@@ -33,3 +33,12 @@ func LLMTextSimple(ctx context.Context, llm, apiKey, question, prompt, modelo st
 	return "", errors.New("LLM Não informada correta!")
 
 }
+
+func Supervisor(ctx context.Context, llm string, question map[string]string, apiKey, personificacaoDoModelo, modeloLLM string) (interface{}, error) {
+
+	if llm == "OpenIA" {
+		return openia_repositories.SupervisorOpenIA(ctx, question, apiKey, personificacaoDoModelo, modeloLLM)
+	}
+	return "", errors.New("LLM Não informada correta!")
+
+}
