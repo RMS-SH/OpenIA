@@ -48,3 +48,6 @@ type TranscriptionRequest struct {
 	Temperature            float64  `json:"temperature,omitempty"`
 	TimestampGranularities []string `json:"timestamp_granularities,omitempty"`
 }
+
+/////////////////////////////////////////////////////
+///////////////////////////////////////////////////////

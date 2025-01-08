@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/RMS-SH/OpenIA/internal/dto"
+	dto "github.com/RMS-SH/OpenIA/internal/dto/openia"
 	"github.com/RMS-SH/OpenIA/internal/infra/clients"
 	"github.com/RMS-SH/OpenIA/internal/interfaces"
 )

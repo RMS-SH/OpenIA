@@ -2,7 +2,7 @@
 package adapters_openia
 
 import (
-	"github.com/RMS-SH/OpenIA/internal/dto"
+	dto "github.com/RMS-SH/OpenIA/internal/dto/openia"
 	"github.com/RMS-SH/OpenIA/internal/entities"
 )
 

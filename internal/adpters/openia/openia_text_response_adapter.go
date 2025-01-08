@@ -4,7 +4,7 @@ package adapters_openia
 import (
 	"fmt"
 
-	"github.com/RMS-SH/OpenIA/internal/dto"
+	dto "github.com/RMS-SH/OpenIA/internal/dto/openia"
 	"github.com/RMS-SH/OpenIA/internal/entities"
 	errorLLM "github.com/RMS-SH/OpenIA/internal/error"
 )
