@@ -36,3 +36,15 @@ type ImageURL struct {
 	URL    string `json:"url"`
 	Detail string `json:"detail,omitempty"`
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+type TranscriptionRequest struct {
+	File                   string   `json:"file"`
+	Model                  string   `json:"model"`
+	Language               string   `json:"language,omitempty"`
+	Prompt                 string   `json:"prompt,omitempty"`
+	ResponseFormat         string   `json:"response_format,omitempty"`
+	Temperature            float64  `json:"temperature,omitempty"`
+	TimestampGranularities []string `json:"timestamp_granularities,omitempty"`
+}

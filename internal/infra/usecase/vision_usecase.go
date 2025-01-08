@@ -17,11 +17,11 @@ func NewVisionUseCase(visionClient interfaces.VisionService) *VisionUseCase {
 }
 
 // AnalyzeImageFromURL encapsula a chamada de análise de imagem (URL).
-func (uc *VisionUseCase) AnalyzeImageFromURL(ctx context.Context, url, prompt, modelo, qualidadeImagem string) (interface{}, error) {
+func (uc *VisionUseCase) UseCaseAnalyzeImageFromURL(ctx context.Context, url, prompt, modelo, qualidadeImagem string) (interface{}, error) {
 	return uc.visionClient.AnalyzeImage(ctx, url, prompt, modelo, qualidadeImagem)
 }
 
 // AnalyzeImageFromBase64 encapsula a chamada de análise de imagem (Base64).
-func (uc *VisionUseCase) AnalyzeImageFromBase64(ctx context.Context, base64, prompt, modelo, qualidadeImagem string) (interface{}, error) {
+func (uc *VisionUseCase) UseCasAnalyzeImageFromBase64(ctx context.Context, base64, prompt, modelo, qualidadeImagem string) (interface{}, error) {
 	return uc.visionClient.AnalyzeImage(ctx, base64, prompt, modelo, qualidadeImagem)
 }

@@ -12,15 +12,15 @@ import (
 )
 
 // OpenAIClient implementa a interface VisionService e lida com chamadas à API da OpenAI.
-type OpenAIClient struct {
+type OpenAIClientVision struct {
 	apiKey     string
 	httpClient clients.HTTPClient
 	baseURL    string
 }
 
 // NewOpenAIClient cria e retorna uma instância de OpenAIClient.
-func NewOpenAIClient(apiKey string, httpClient clients.HTTPClient) *OpenAIClient {
-	return &OpenAIClient{
+func NewOpenAIClientVision(apiKey string, httpClient clients.HTTPClient) *OpenAIClientVision {
+	return &OpenAIClientVision{
 		apiKey:     apiKey,
 		httpClient: httpClient,
 		baseURL:    "https://api.openai.com/v1",
@@ -29,7 +29,7 @@ func NewOpenAIClient(apiKey string, httpClient clients.HTTPClient) *OpenAIClient
 
 // AnalyzeImage atende ao contrato da VisionService.
 // Ele monta a requisição e utiliza o HTTPClient para fazer a chamada.
-func (c *OpenAIClient) AnalyzeImage(ctx context.Context, imageInput, prompt, modelo, qualidadeImagem string) (interface{}, error) {
+func (c *OpenAIClientVision) AnalyzeImage(ctx context.Context, imageInput, prompt, modelo, qualidadeImagem string) (interface{}, error) {
 	// Monta a estrutura base da requisição
 	reqBody := dto.ChatCompletionsRequest{
 		Model:     modelo,
@@ -91,4 +91,4 @@ func (c *OpenAIClient) AnalyzeImage(ctx context.Context, imageInput, prompt, mod
 }
 
 // Garante em tempo de compilação que OpenAIClient implementa VisionService.
-var _ interfaces.VisionService = (*OpenAIClient)(nil)
+var _ interfaces.VisionService = (*OpenAIClientVision)(nil)
