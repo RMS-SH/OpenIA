@@ -48,8 +48,14 @@ func (ass *OpenAIClientAssistent) CreateAssistant(ctx context.Context, model, na
 }
 
 // ModifyAssistant atualiza um assistente existente (ex: adicionar VectorStoreID)
-func (ass *OpenAIClientAssistent) ModifyAssistant(ctx context.Context, assistantID string, request openai.AssistantRequest) (*openai.Assistant, error) {
-	resp, err := ass.ClientOpenAI.ModifyAssistant(ctx, assistantID, request)
+func (ass *OpenAIClientAssistent) ModifyAssistant(ctx context.Context, assistantID string, vectorStoreID string) (*openai.Assistant, error) {
+
+	modifyReq := openai.AssistantRequest{
+		Model:   "gpt-4o-mini",
+		FileIDs: []string{vectorStoreID}, // ou vectorStoreID dependendo da API
+	}
+
+	resp, err := ass.ClientOpenAI.ModifyAssistant(ctx, assistantID, modifyReq)
 	if err != nil {
 		return nil, fmt.Errorf("erro ao atualizar assistente: %w", err)
 	}

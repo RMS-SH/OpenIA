@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 
 	RMSLLMs "github.com/RMS-SH/OpenIA/internal"
 )
@@ -33,7 +34,10 @@ func main() {
 		supervisor, _ := supervisorRMS()
 		fmt.Println(supervisor)
 	case 5:
+		inicio := time.Now()
 		CreateMenssageWithFile, _ := RespostaAssistente()
+		tempoDecorrido := time.Since(inicio).Seconds()
+		fmt.Printf("Tempo de execução: %.2f segundos\n", tempoDecorrido)
 		fmt.Println(CreateMenssageWithFile)
 
 	default:

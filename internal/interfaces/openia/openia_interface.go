@@ -10,7 +10,7 @@ import (
 type OpenIAInterface interface {
 	// Funções para Assistentes
 	CreateAssistant(ctx context.Context, model, name, instructions string) (*openai.Assistant, error)
-	ModifyAssistant(ctx context.Context, assistantID string, request openai.AssistantRequest) (*openai.Assistant, error)
+	ModifyAssistant(ctx context.Context, assistantID string, vectorStoreID string) (*openai.Assistant, error)
 	DeleteAssistant(ctx context.Context, assistantID string) error
 
 	// Funções para Arquivos
