@@ -43,18 +43,6 @@ func Supervisor(ctx context.Context, llm string, question map[string]string, api
 
 }
 
-func CadastraAssistenteOpenIA(ctx context.Context, apiKey, modelo, prompt string) (interface{}, error) {
-	return openia_repositories.CadastraAssisnteSimples(ctx, apiKey, modelo, prompt)
-}
-
-func DeletaAssistentOpenIA(ctx context.Context, apiKey, id string) (interface{}, error) {
-	return openia_repositories.DeletaAssistentSimples(ctx, id, apiKey)
-}
-
-func UpdaloadArquivoOpenaIA(ctx context.Context, url, apiKEY string) (interface{}, error) {
-	return openia_repositories.UpdaloadArquivoOpenIA(ctx, url, apiKEY)
-}
-
-func CreateVectorStoreByFileID(ctx context.Context, id, apiKEY string) (interface{}, error) {
-	return openia_repositories.CreateVectorStoreByArquive(ctx, id, apiKEY)
+func InterpretacaoPDFAssistente(ctx context.Context, prompt, url, apiKEY string) (interface{}, error) {
+	return openia_repositories.InterpretacaoPDFAssistenteRepository(ctx, prompt, url, apiKEY)
 }

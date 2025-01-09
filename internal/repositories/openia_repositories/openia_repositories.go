@@ -11,6 +11,7 @@ import (
 	"github.com/RMS-SH/OpenIA/internal/infra/clients/openia_client"
 	"github.com/RMS-SH/OpenIA/internal/infra/usecase"
 	usecase_openia "github.com/RMS-SH/OpenIA/internal/infra/usecase/openia"
+	openai "github.com/sashabaranov/go-openai"
 )
 
 // imagemInPut = url ou base64 - Obrigatório
@@ -132,38 +133,12 @@ func SupervisorOpenIA(ctx context.Context, question map[string]string, apiKey, p
 	return uc.UseCaseSupervisor(ctx, question, personificacaoDoModelo, modeloLLM)
 }
 
-func CadastraAssisnteSimples(ctx context.Context, apiKey, modelo, prompt string) (interface{}, error) {
+func InterpretacaoPDFAssistenteRepository(ctx context.Context, prompt, url, apikey string) (interface{}, error) {
 
-	client := openia_client.NewOpenAIClientAssistent(apiKey)
+	ClientOpenAI := openai.NewClient(apikey)
+	client := openia_client.NewOpenAIClientAssistent(ClientOpenAI)
 	uc := usecase_openia.NewOpenIAUseCase(client)
 
-	return uc.OpenIACreateAssistent(ctx, modelo, prompt)
-
-}
-
-func DeletaAssistentSimples(ctx context.Context, id, apiKey string) (interface{}, error) {
-
-	client := openia_client.NewOpenAIClientAssistent(apiKey)
-	uc := usecase_openia.NewOpenIAUseCase(client)
-
-	return uc.ExcluirAssistent(ctx, id)
-
-}
-
-func UpdaloadArquivoOpenIA(ctx context.Context, url, apiKEY string) (interface{}, error) {
-
-	client := openia_client.NewOpenAIClientAssistent(apiKEY)
-	uc := usecase_openia.NewOpenIAUseCase(client)
-
-	return uc.UpdaloadArquivo(ctx, url)
-
-}
-
-func CreateVectorStoreByArquive(ctx context.Context, id, apiKEY string) (interface{}, error) {
-
-	client := openia_client.NewOpenAIClientAssistent(apiKEY)
-	uc := usecase_openia.NewOpenIAUseCase(client)
-
-	return uc.CreateVectorStore(ctx, id)
+	return uc.InterpretacaoPDFAssistenteUseCase(ctx, prompt, url)
 
 }

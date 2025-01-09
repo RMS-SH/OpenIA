@@ -1,2 +1,4 @@
 github.com/RMS-SH/UtilitariosGoRMS v0.0.0-20250108182612-558697d5d784 h1:UUWQXvERFpmarwtt3ASEEwjWufo9/8eIRWxpxstpdek=
 github.com/RMS-SH/UtilitariosGoRMS v0.0.0-20250108182612-558697d5d784/go.mod h1:J3KGTLeozhdRB7AwiCvKxzTZGRL5Xq58j5q+8SzB0mo=
+github.com/sashabaranov/go-openai v1.36.1 h1:EVfRXwIlW2rUzpx6vR+aeIKCK/xylSrVYAx1TMTSX3g=
+github.com/sashabaranov/go-openai v1.36.1/go.mod h1:lj5b/K+zjTSFxVLijLSTDZuP7adOgerWeFyZLUhAKRg=

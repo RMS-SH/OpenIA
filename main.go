@@ -3,38 +3,42 @@
 package main
 
 import (
-	"fmt"
-
 	"context"
+	"fmt"
 
 	RMSLLMs "github.com/RMS-SH/OpenIA/internal"
 )
 
-const arquivo = "https://bot.dfktv2.com/media/whatsapp/453695414498557/1258988938489402/2024-modelo-de-contrato-de-compra-e-venda-de-passagens-aereas-HXn0.docx"
+const Arquivo = "https://bot.dfktv2.com/media/whatsapp/453695414498557/1008916574347940/fozxrecife-1-pTQb.pdf"
 const apiKey = "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"
 const Modelo = "gpt-4o-mini"
 const IDA = "file-UGvjrvrGMSsiR6WFCyFXZy"
+const ID = 5
+const VSID = "vs_9CWowhjE2918ca21QwZqZRpu"
+const AssistantID = "asst_73pVJIHhjrCPOUNyyGBxCcJm"
 
 func main() {
 	// Exemplo de uso local (teste) das funções exportadas no pacote openia
+	switch ID {
+	case 1:
+		audio, _ := audioTranscription()
+		fmt.Println(audio)
+	case 2:
+		imagem, _ := analisaImage()
+		fmt.Println(imagem)
+	case 3:
+		text, _ := textoToLLMSimple()
+		fmt.Println(text)
+	case 4:
+		supervisor, _ := supervisorRMS()
+		fmt.Println(supervisor)
+	case 5:
+		CreateMenssageWithFile, _ := RespostaAssistente()
+		fmt.Println(CreateMenssageWithFile)
 
-	// audio, _ := audioTranscription()
-	// fmt.Println(audio)
-	// imagem, _ := analisaImage()
-	// fmt.Println(imagem)
-	// text, _ := textoToLLMSimple()
-	// fmt.Println(text)
-	// supervisor, _ := supervisorRMS()
-	// fmt.Println(supervisor)
-	// cadastraAssistente, _ := cadatraAssistente()
-	// fmt.Println(cadastraAssistente)
-	// deletaAssistente, _ := deletaAssistente()
-	// fmt.Println(deletaAssistente)
-	// uploadArquivo, _ := uploadArquivoOpenIA()
-	// fmt.Println(uploadArquivo)
-	vs, _ := vs()
-	fmt.Println(vs)
-
+	default:
+		fmt.Println("ID inválido")
+	}
 }
 
 func audioTranscription() (interface{}, error) {
@@ -108,39 +112,9 @@ func supervisorRMS() (interface{}, error) {
 	return result, nil
 }
 
-func cadatraAssistente() (interface{}, error) {
+func RespostaAssistente() (interface{}, error) {
 	ctx := context.Background()
-	result, err := RMSLLMs.CadastraAssistenteOpenIA(ctx, apiKey, Modelo, "Olá mundo")
-	if err != nil {
-		return nil, err
-
-	}
-	return result, nil
-}
-
-func deletaAssistente() (interface{}, error) {
-	ctx := context.Background()
-	result, err := RMSLLMs.DeletaAssistentOpenIA(ctx, apiKey, "asst_uftbVSjcj9svm7X94IzHgdiZ")
-	if err != nil {
-		return nil, err
-
-	}
-	return result, nil
-}
-
-func uploadArquivoOpenIA() (interface{}, error) {
-	ctx := context.Background()
-	result, err := RMSLLMs.UpdaloadArquivoOpenaIA(ctx, arquivo, apiKey)
-	if err != nil {
-		return nil, err
-
-	}
-	return result, nil
-}
-
-func vs() (interface{}, error) {
-	ctx := context.Background()
-	result, err := RMSLLMs.CreateVectorStoreByFileID(ctx, IDA, apiKey)
+	result, err := RMSLLMs.InterpretacaoPDFAssistente(ctx, "Me diga oque tem no pdf", Arquivo, apiKey)
 	if err != nil {
 		return nil, err
 

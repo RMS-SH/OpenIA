@@ -167,13 +167,17 @@ func CriaAssistenteSimplesDTO(model, instructions string) *CreateAssistantReques
 	temp := 1.0
 	topP := 1.0
 
+	tools := []Tool{
+		{Type: "file_search"}, // versão mais simples, sem configurações adicionais
+	}
+
 	// Montamos a requisição
 	assistantReq := NewCreateAssistantRequest(
 		model,
 		nil,
 		nil,
 		&instructions,
-		nil,
+		tools,
 		metadata,
 		&temp,
 		&topP,
