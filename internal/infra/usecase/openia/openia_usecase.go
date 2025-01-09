@@ -174,20 +174,39 @@ func (ac *OpenIAUseCase) InterpretacaoPDFAssistenteUseCase(ctx context.Context, 
 	}
 
 	// -------------------------------------------------------------------
-	// Passo 10: Loop para Monitorar a Run
+	// Passo 9: Loop para Monitorar a Run com Timeout
 	// -------------------------------------------------------------------
-	var runStatus openai.RunStatus
-	for runStatus != openai.RunStatusCompleted {
-		time.Sleep(5 * time.Second)
-		run, err = ac.openai.RetrieveRun(ctx, threadResult.ID, run.ID)
+
+	// Define um timeout total para o monitoramento da Run
+	timeout := 10 * time.Minute // Ajuste conforme a necessidade
+	ctxWithTimeout, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel() // Garante que recursos sejam liberados quando o timeout ocorrer
+	runStatus := openai.RunStatusInProgress
+	for {
+		select {
+		case <-ctxWithTimeout.Done():
+			return nil, fmt.Errorf("timeout atingido ao monitorar a Run: %w", ctxWithTimeout.Err())
+		default:
+			// Continua o loop
+		}
+
+		time.Sleep(5 * time.Second) // Intervalo entre as verificações
+
+		run, err := ac.openai.RetrieveRun(ctx, threadResult.ID, run.ID)
 		if err != nil {
 			return nil, fmt.Errorf("erro ao recuperar status da Run: %w", err)
 		}
+
 		runStatus = run.Status
 		fmt.Printf("Status da Run: %s\n", runStatus)
 
 		switch runStatus {
+		case openai.RunStatusCompleted:
+			// Run concluída com sucesso, sai do loop
+			fmt.Println("Run concluída com sucesso.")
+			goto ApósLoop
 		case openai.RunStatusFailed, openai.RunStatusCancelled, openai.RunStatusExpired:
+			// Run falhou, cancela o contexto e retorna o erro
 			return nil, fmt.Errorf("run falhou: %v", run.LastError)
 		case openai.RunStatusRequiresAction:
 			if run.RequiredAction.Type == openai.RequiredActionTypeSubmitToolOutputs {
@@ -199,8 +218,13 @@ func (ac *OpenIAUseCase) InterpretacaoPDFAssistenteUseCase(ctx context.Context, 
 				}
 				fmt.Printf("Tool outputs submetidas com sucesso: %v\n", run.ID)
 			}
+		default:
+			// Outros status podem ser tratados aqui, se necessário
+			fmt.Printf("Status da Run não tratado: %s\n", runStatus)
 		}
 	}
+
+ApósLoop:
 
 	// -------------------------------------------------------------------
 	// Passo 11: Recuperar mensagens
@@ -262,5 +286,5 @@ func (ac *OpenIAUseCase) InterpretacaoPDFAssistenteUseCase(ctx context.Context, 
 	}
 
 	// Retornamos as mensagens resultantes da interpretação do PDF
-	return messages, nil
+	return messages.Messages[0].Content[0].Text.Value, nil
 }
