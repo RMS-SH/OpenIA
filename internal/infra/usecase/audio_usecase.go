@@ -4,6 +4,7 @@ import (
 	"context"
 
 	adapters "github.com/RMS-SH/OpenIA/internal/adpters"
+	"github.com/RMS-SH/OpenIA/internal/entities"
 	"github.com/RMS-SH/OpenIA/internal/interfaces"
 )
 
@@ -19,7 +20,7 @@ func NewAudioUseCase(audioClient interfaces.AudioInterface, adapter adapters.Aud
 }
 
 // AnalyzeImageFromURL encapsula a chamada de análise de imagem (URL).
-func (ac *AudioUseCase) UseCaseAudioToText(ctx context.Context, url, modelo, language string) (interface{}, error) {
+func (ac *AudioUseCase) UseCaseAudioToText(ctx context.Context, url, modelo, language string) (*entities.AudioTranscriptionResponse, error) {
 
 	response, err := ac.audioClient.AudioToText(ctx, url, modelo, language)
 	if err != nil {

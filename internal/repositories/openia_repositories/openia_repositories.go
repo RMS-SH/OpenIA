@@ -7,6 +7,7 @@ import (
 	"time"
 
 	adapters "github.com/RMS-SH/OpenIA/internal/adpters/openia"
+	"github.com/RMS-SH/OpenIA/internal/entities"
 	"github.com/RMS-SH/OpenIA/internal/infra/clients"
 	"github.com/RMS-SH/OpenIA/internal/infra/clients/openia_client"
 	"github.com/RMS-SH/OpenIA/internal/infra/usecase"
@@ -79,7 +80,7 @@ func TextOpenIAAnalizy(ctx context.Context, question, apiKey, prompt, modelo str
 	return uc.UseCasAnalyzeText(ctx, question, prompt, modelo)
 }
 
-func AudioOpenIATranscription(ctx context.Context, apiKey, url, modelo, language string) (interface{}, error) {
+func AudioOpenIATranscription(ctx context.Context, apiKey, url, modelo, language string) (*entities.AudioTranscriptionResponse, error) {
 	// Verificação obrigatória dos parâmetros
 	if url == "" {
 		return "", errors.New("question não pode ser vazio")

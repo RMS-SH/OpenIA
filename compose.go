@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/RMS-SH/OpenIA/internal/entities"
 	"github.com/RMS-SH/OpenIA/internal/repositories/openia_repositories"
 )
 
@@ -16,12 +17,12 @@ func AnalisaImage(ctx context.Context, llm, imageInput, apiKey, prompt, modelo, 
 
 }
 
-func AudioTranscription(ctx context.Context, llm, apiKey, url, modelo, language string) (interface{}, error) {
+func AudioTranscription(ctx context.Context, llm, apiKey, url, modelo, language string) (*entities.AudioTranscriptionResponse, error) {
 
 	if llm == "OpenIA" {
 		return openia_repositories.AudioOpenIATranscription(ctx, apiKey, url, modelo, language)
 	}
-	return "", errors.New("LLM Não informada correta!")
+	return nil, errors.New("LLM Não informada correta!")
 
 }
 
