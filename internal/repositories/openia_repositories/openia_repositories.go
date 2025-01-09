@@ -18,14 +18,14 @@ import (
 // imagemInPut = url ou base64 - Obrigatório
 // Qualidade Imagem ( OpenIA ) = "Low", "Medium", "High"
 // Função Chama Analise de Imagem com base no prompt fornecido.
-func VisionOpenIA(ctx context.Context, imageInput, apiKey, prompt, modelo, qualidadeImagem string) (interface{}, error) {
+func VisionOpenIA(ctx context.Context, imageInput, apiKey, prompt, modelo, qualidadeImagem string) (*entities.ImagemAnalyzeResponse, error) {
 	// Verificação obrigatória dos parâmetros
 	if imageInput == "" {
-		return "", errors.New("imageInput não pode ser vazio")
+		return nil, errors.New("imageInput não pode ser vazio")
 	}
 
 	if apiKey == "" {
-		return "", errors.New("API KEY não pode ser vazia")
+		return nil, errors.New("API KEY não pode ser vazia")
 	}
 
 	if prompt == "" {
@@ -83,11 +83,11 @@ func TextOpenIAAnalizy(ctx context.Context, question, apiKey, prompt, modelo str
 func AudioOpenIATranscription(ctx context.Context, apiKey, url, modelo, language string) (*entities.AudioTranscriptionResponse, error) {
 	// Verificação obrigatória dos parâmetros
 	if url == "" {
-		return "", errors.New("question não pode ser vazio")
+		return nil, errors.New("question não pode ser vazio")
 	}
 
 	if apiKey == "" {
-		return "", errors.New("API KEY não pode ser vazia")
+		return nil, errors.New("API KEY não pode ser vazia")
 	}
 
 	if language == "" {

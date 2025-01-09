@@ -7,7 +7,7 @@ import "github.com/RMS-SH/OpenIA/internal/entities"
 // converter a resposta recebida do LLM (interface{}) em uma string
 // que o caso de uso entende.
 type AnalyzeTextResponseAdapter interface {
-	AdaptResponse(response interface{}) (interface{}, error)
+	AdaptResponse(response string) (interface{}, error)
 	AdaptResponseSupervisor(response interface{}) (string, error)
 }
 
@@ -16,5 +16,5 @@ type AudioToTextResponseAdapter interface {
 }
 
 type AnalyzeImageAdapter interface {
-	AdaptResponse(response interface{}) (interface{}, error)
+	AdaptResponse(response interface{}) (*entities.ImagemAnalyzeResponse, error)
 }

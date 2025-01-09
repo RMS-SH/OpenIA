@@ -8,12 +8,12 @@ import (
 	"github.com/RMS-SH/OpenIA/internal/repositories/openia_repositories"
 )
 
-func AnalisaImage(ctx context.Context, llm, imageInput, apiKey, prompt, modelo, qualidadeImagem string) (interface{}, error) {
+func AnalisaImage(ctx context.Context, llm, imageInput, apiKey, prompt, modelo, qualidadeImagem string) (*entities.ImagemAnalyzeResponse, error) {
 
 	if llm == "OpenIA" {
 		return openia_repositories.VisionOpenIA(ctx, imageInput, apiKey, prompt, modelo, qualidadeImagem)
 	}
-	return "", errors.New("LLM Não informada correta!")
+	return nil, errors.New("LLM Não informada correta!")
 
 }
 
