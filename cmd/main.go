@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	RMSLLMs "github.com/RMS-SH/OpenIA/internal"
+	RMSLLMs "github.com/RMS-SH/OpenIA"
 )
 
 const Arquivo = "https://bot.dfktv2.com/media/whatsapp/453695414498557/1008916574347940/fozxrecife-1-pTQb.pdf"
