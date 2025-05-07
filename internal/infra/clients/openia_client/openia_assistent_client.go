@@ -50,13 +50,26 @@ func (ass *OpenAIClientAssistent) CreateAssistant(ctx context.Context, model, na
 // ModifyAssistant atualiza um assistente existente (ex: adicionar VectorStoreID)
 func (ass *OpenAIClientAssistent) ModifyAssistant(ctx context.Context, assistantID string, vectorStoreID string) (*openai.Assistant, error) {
 
+	// Tentativa com uma requisição mais minimalista para ModifyAssistant:
+	// Apenas ToolResources é explicitamente definido.
+	// O campo Model não é especificado aqui, então o modelo original do assistente será mantido.
+	// FileIDs é explicitamente definido como nil para reforçar que não deve ser enviado.
 	modifyReq := openai.AssistantRequest{
-		Model:   "gpt-4o-mini",
-		FileIDs: []string{vectorStoreID}, // ou vectorStoreID dependendo da API
+		ToolResources: &openai.AssistantToolResource{
+			FileSearch: &openai.AssistantToolFileSearch{
+				VectorStoreIDs: []string{vectorStoreID},
+			},
+		},
+		FileIDs: nil, // Definindo explicitamente como nil para garantir
+		// O campo Tools também não é modificado aqui, pois o assistente já foi criado com file_search.
+		// Se precisasse adicionar/remover tools, o campo Tools seria preenchido.
 	}
 
 	resp, err := ass.ClientOpenAI.ModifyAssistant(ctx, assistantID, modifyReq)
 	if err != nil {
+		// Para depuração, seria útil ver o erro exato da API.
+		// Você pode adicionar um log mais detalhado do erro aqui, se necessário.
+		// fmt.Printf("Debug ModifyAssistant error: %s\n", err.Error())
 		return nil, fmt.Errorf("erro ao atualizar assistente: %w", err)
 	}
 	return &resp, nil
